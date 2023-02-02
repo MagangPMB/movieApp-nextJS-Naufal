@@ -24,6 +24,9 @@ const MoviesSection = ({ data, header }) => {
 
   return (
     <div className='w-3/4 mx-auto mt-10 pb-10'>
+      <h1 className='text-center mb-10 text-6xl px-2.5 py-0.5 rounded font-bold text-white mt-20'>
+        Nefliks<span className='text-blue-500'>.</span>
+      </h1>
       <div className='relative xl:w-3/4 sm:w-full mx-auto'>
         <div className='absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none'>
           <svg
@@ -47,6 +50,7 @@ const MoviesSection = ({ data, header }) => {
           onChange={(e) => debounceSearch(e.target.value)}
         />
       </div>
+
       <h1 className='text-3xl font-bold text-white mt-20'>
         {movies.length != 0 && header}
       </h1>
