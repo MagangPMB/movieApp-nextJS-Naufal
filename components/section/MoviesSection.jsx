@@ -1,22 +1,26 @@
 import React, { useEffect, useState } from "react";
 import debounce from "lodash.debounce";
 import MovieCard from "../artifacts/MovieCard";
+import Image from "next/image";
+import Link from "next/link";
+import { useSWR } from "swr";
 
 const MoviesSection = ({ data, header }) => {
-  const moviesDefault = data.data.results;
-
-  const [movies, setMovies] = useState(moviesDefault);
+  const [movies, setMovies] = useState(data.data.results);
+  const [searchedMovies, setSearchedMovies] = useState([]);
+  const [showAllMovies, setShowAllMovies] = useState(false);
 
   const searchMovies = async (e) => {
     if (e.length < 1) {
-      setMovies(moviesDefault);
+      setSearchedMovies([]);
     }
     if (e.length > 0) {
       const res = await fetch(
         `https://api.themoviedb.org/3/search/movie?query=${e}&api_key=40a2a6297df6cc19c9ed6c934fa0763b&language=en-US&page=1`
       );
       const data = await res.json();
-      setMovies(data.results);
+      setSearchedMovies(data.results);
+      console.log(data.results);
     }
   };
 
@@ -50,6 +54,85 @@ const MoviesSection = ({ data, header }) => {
           onChange={(e) => debounceSearch(e.target.value)}
         />
       </div>
+
+      {searchedMovies.length > 0 && (
+        <div className='relative mt-5'>
+          <div className='absolute bg-gray-300   w-full p-5 rounded-lg'>
+            <ul>
+              {searchedMovies.length > 0 && showAllMovies === true
+                ? searchedMovies.map((movie, index) => (
+                    <Link
+                      href={`/${movie.id}`}
+                      key={index}
+                      className='text-white flex flex-col mb-3 hover:bg-slate-100'>
+                      <div className='flex'>
+                        <div className=''>
+                          <Image
+                            src={
+                              movie.poster_path != null
+                                ? `https://image.tmdb.org/t/p/w500${movie.poster_path}`
+                                : "https://via.placeholder.com/256x384.png?text=Sorry+There's+No+Image"
+                            }
+                            width={100}
+                            height={150}
+                            alt='movie poster'
+                          />
+                        </div>
+                        <div className='ml-3 text-gray-900'>
+                          <h1 className='text-lg font-bold'>{movie.title}</h1>
+                          <p className='text-sm'>{movie.vote_average + "⭐"}</p>
+                          <p className='text-sm'>
+                            {movie.overview.length > 20
+                              ? movie.overview.substring(0, 200) + "..."
+                              : movie.overview}
+                          </p>
+                        </div>
+                      </div>
+                      <div className='w-full h-0.5 mt-2 bg-gray-100'></div>
+                    </Link>
+                  ))
+                : searchedMovies.slice(0, 5).map((movie, index) => (
+                    <Link
+                      href={`/${movie.id}`}
+                      key={index}
+                      className='text-white flex flex-col mb-3 hover:bg-slate-100'>
+                      <div className='flex'>
+                        <div className=''>
+                          <Image
+                            src={
+                              movie.poster_path != null
+                                ? `https://image.tmdb.org/t/p/w500${movie.poster_path}`
+                                : "https://via.placeholder.com/256x384.png?text=Sorry+There's+No+Image"
+                            }
+                            width={100}
+                            height={150}
+                            alt='movie poster'
+                          />
+                        </div>
+                        <div className='ml-3 text-gray-900'>
+                          <h1 className='text-lg font-bold'>{movie.title}</h1>
+                          <p className='text-sm'>{movie.vote_average + "⭐"}</p>
+                          <p className='text-sm'>
+                            {movie.overview.length > 20
+                              ? movie.overview.substring(0, 200) + "..."
+                              : movie.overview}
+                          </p>
+                        </div>
+                      </div>
+                      <div className='w-full h-0.5 mt-2 bg-gray-100'></div>
+                    </Link>
+                  ))}
+            </ul>
+            {searchedMovies.length > 5 && (
+              <button
+                className='flex mx-auto bg-blue-500 px-5 py-3 rounded-lg text-white'
+                onClick={() => setShowAllMovies(!showAllMovies)}>
+                {showAllMovies === true ? "Show less" : "Show all"}
+              </button>
+            )}
+          </div>
+        </div>
+      )}
 
       <h1 className='text-3xl font-bold text-white mt-20'>
         {movies.length != 0 && header}
