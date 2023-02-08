@@ -57,79 +57,48 @@ const MoviesSection = ({ data, header }) => {
 
       {searchedMovies.length > 0 && (
         <div className='relative mt-5'>
-          <div className='absolute bg-gray-300   w-full p-5 rounded-lg'>
+          <div className='absolute bg-gray-300 max-h-[440px] overflow-y-scroll w-full p-5 rounded-lg'>
             <ul>
-              {searchedMovies.length > 0 && showAllMovies === true
-                ? searchedMovies.map((movie, index) => (
-                    <Link
-                      href={`/${movie.id}`}
-                      key={index}
-                      className='text-white flex flex-col mb-3 hover:bg-slate-100'>
-                      <div className='flex'>
-                        <div className=''>
-                          <Image
-                            src={
-                              movie.poster_path != null
-                                ? `https://image.tmdb.org/t/p/w500${movie.poster_path}`
-                                : "https://via.placeholder.com/256x384.png?text=Sorry+There's+No+Image"
-                            }
-                            width={100}
-                            height={150}
-                            alt='movie poster'
-                          />
-                        </div>
-                        <div className='ml-3 text-gray-900'>
-                          <h1 className='text-lg font-bold'>{movie.title}</h1>
-                          <p className='text-sm'>{movie.vote_average + "⭐"}</p>
-                          <p className='text-sm'>
-                            {movie.overview.length > 20
-                              ? movie.overview.substring(0, 200) + "..."
-                              : movie.overview}
-                          </p>
-                        </div>
+              {searchedMovies.length > 0 &&
+                searchedMovies.map((movie, index) => (
+                  <Link
+                    href={`/${movie.id}`}
+                    key={index}
+                    className='text-white flex flex-col mb-3 hover:bg-slate-100'>
+                    <div className='flex'>
+                      <div className=''>
+                        <Image
+                          src={
+                            movie.poster_path != null
+                              ? `https://image.tmdb.org/t/p/w500${movie.poster_path}`
+                              : "https://via.placeholder.com/256x384.png?text=Sorry+There's+No+Image"
+                          }
+                          width={100}
+                          height={150}
+                          alt='movie poster'
+                        />
                       </div>
-                      <div className='w-full h-0.5 mt-2 bg-gray-100'></div>
-                    </Link>
-                  ))
-                : searchedMovies.slice(0, 5).map((movie, index) => (
-                    <Link
-                      href={`/${movie.id}`}
-                      key={index}
-                      className='text-white flex flex-col mb-3 hover:bg-slate-100'>
-                      <div className='flex'>
-                        <div className=''>
-                          <Image
-                            src={
-                              movie.poster_path != null
-                                ? `https://image.tmdb.org/t/p/w500${movie.poster_path}`
-                                : "https://via.placeholder.com/256x384.png?text=Sorry+There's+No+Image"
-                            }
-                            width={100}
-                            height={150}
-                            alt='movie poster'
-                          />
-                        </div>
-                        <div className='ml-3 text-gray-900'>
-                          <h1 className='text-lg font-bold'>{movie.title}</h1>
-                          <p className='text-sm'>{movie.vote_average + "⭐"}</p>
-                          <p className='text-sm'>
-                            {movie.overview.length > 20
-                              ? movie.overview.substring(0, 200) + "..."
-                              : movie.overview}
-                          </p>
-                        </div>
+                      <div className='ml-3 text-gray-900'>
+                        <h1 className='text-lg font-bold'>{movie.title}</h1>
+                        <p className='text-sm'>{movie.vote_average + "⭐"}</p>
+                        <p className='text-sm'>
+                          {movie.overview.length > 20
+                            ? movie.overview.substring(0, 200) + "..."
+                            : movie.overview}
+                        </p>
                       </div>
-                      <div className='w-full h-0.5 mt-2 bg-gray-100'></div>
-                    </Link>
-                  ))}
+                    </div>
+                    <div className='w-full h-0.5 mt-2 bg-gray-100'></div>
+                  </Link>
+                ))}
             </ul>
-            {searchedMovies.length > 5 && (
+            {/* {searchedMovies.length > 5 && (
               <button
                 className='flex mx-auto bg-blue-500 px-5 py-3 rounded-lg text-white'
                 onClick={() => setShowAllMovies(!showAllMovies)}>
                 {showAllMovies === true ? "Show less" : "Show all"}
               </button>
-            )}
+            )} */}
           </div>
         </div>
       )}

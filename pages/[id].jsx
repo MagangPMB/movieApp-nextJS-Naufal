@@ -24,6 +24,7 @@ const DetailsMovie = ({ data }) => {
       <div className='mx-auto w-[80%] pb-10'>
         <div className='flex flex-col items-center mt-10'>
           <Image
+            priority
             src={
               movie.backdrop_path != null
                 ? `https://image.tmdb.org/t/p/w500${movie.backdrop_path}`
